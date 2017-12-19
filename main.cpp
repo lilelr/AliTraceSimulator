@@ -8,13 +8,12 @@
 
 #include <glog/logging.h>
 #include <gflags/gflags.h>
-#include <gtest/gtest_prod.h>
 
 #include "AliTracePreProcessor.h"
 
 using namespace std;
 
-DEFINE_string(trace_path, "/Users/yuxiao/Lab/projects/ali/trace_201710/", "Path where the trace files are.");
+DEFINE_string(trace_path, "/home/lilelr/trace_201710/", "Path where the trace files are.");
 
 
 int main() {
