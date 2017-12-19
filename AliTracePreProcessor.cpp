@@ -3,6 +3,11 @@
 //
 
 #include "AliTracePreProcessor.h"
+#include "string_helper.h"
+
+#include <gflags/gflags.h>
+#include <glog/logging.h>
+#include <sys/stat.h>
 
 namespace AliSimulator{
 
@@ -12,9 +17,20 @@ namespace AliSimulator{
 
     void AliTracePreProcessor::Run() {
 
+        CalculateBatchInstanceRuntime();
     }
 
     void AliTracePreProcessor::CalculateBatchInstanceRuntime() {
+        string out_batch_events_file_name;
+        spf(&out_batch_events_file_name, "%s/batch_instance_events.csv", trace_path_.c_str());
+        FILE* out_batch_events_file;
+        if((out_batch_events_file = fopen(out_batch_events_file_name.c_str(), "w")) == NULL){
+            LOG(FATAL)<<"Failed to open batch_events file for writing";
+        }else{
+            LOG(INFO)<<"OK, ready to write batch_events file";
+        }
+
+
 
     }
 
