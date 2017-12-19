@@ -39,6 +39,10 @@ namespace AliSimulator{
         string status_;
         int32_t seq_no_;
         int32_t total_seq_no_;
+        float max_real_cpu_num_;
+        float avg_real_cpu_num_;
+        float max_mem_usage_;
+        float avg_mem_usage_;
 
     };
 

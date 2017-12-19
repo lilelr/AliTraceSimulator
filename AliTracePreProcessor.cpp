@@ -48,10 +48,68 @@ namespace AliSimulator{
         char line[200];
         vector<string> line_cols;
         while(!feof(batch_events_file)){
-            if(fscanf(batch_events_file, "%[^\n]*%[\n]", &line[0]) > 0){
+            if(fscanf(batch_events_file, "%[^\n]%*[\n]", &line[0]) > 0){
                 boost::split(line_cols, line, is_any_of(","), token_compress_off);
+                if(line_cols.size() !=12){
+                    LOG(ERROR)<<"Unexpected structure of batch instance event on line"<< num_line<<": found" <<line_cols.size() <<" columns";
+                }else{
+                   BatchInstance  batchInstance;
+                    try {
+                        batchInstance.start_timestamp_ = lexical_cast<int64_t>(line_cols[0]);
+                        batchInstance.end_timestamp_ = lexical_cast<int64_t>(line_cols[1]);
+
+                        // job_id or task_id is empty
+                        if(line_cols[2].empty()){
+                            batchInstance.job_id_ = 0;
+                        }else{
+                            batchInstance.job_id_ = lexical_cast<uint64_t>(line_cols[2]);
+                        }
+
+                        if(line_cols[3].empty()){
+                            batchInstance.task_id_ = 0;
+                        }else{
+                            batchInstance.task_id_ = lexical_cast<uint64_t>(line_cols[3]);
+                        }
+
+                        // do not have machine_ID
+                        if(line_cols[4].empty()){
+                            batchInstance.machine_ID_ = -1;
+                        }else{
+                            batchInstance.machine_ID_ = lexical_cast<int32_t>(line_cols[4]);
+                        }
+                        batchInstance.status_ = line_cols[5];
+                        batchInstance.seq_no_ = lexical_cast<int32_t>(line_cols[6]);
+                        batchInstance.total_seq_no_ = lexical_cast<int32_t>(line_cols[7]);
+
+                        // do not have cpu
+                        if(line_cols[8].empty()){
+                            batchInstance.max_real_cpu_num_ = -1;
+                        }else{
+                            batchInstance.max_real_cpu_num_ = lexical_cast<float>(line_cols[8]);
+
+                        }
+                        if(line_cols[9].empty()){
+                            batchInstance.avg_real_cpu_num_ = -1;
+
+                        }else{
+                            batchInstance.avg_real_cpu_num_ = lexical_cast<float>(line_cols[9]);
+
+                        }
+//                    batchInstance.max_mem_usage_ = lexical_cast<float>(line_cols[10]);
+                        batchInstance.avg_mem_usage_ = -1;
+
+                        // get the total runtime of the current running
+                        if(batchInstance)
+                        batchInstance.total_runtime = batchInstance.end_timestamp_ - batchInstance.start_timestamp_;
+                    }catch (bad_cast& e){
+                        LOG(INFO)<<e.what()<<endl;
+                        LOG(INFO)<<"num line: "<< num_line <<endl;
+                    }
+
+
+                }
             }
-            LOG(INFO)<<(line_cols.size());
+//            LOG(INFO)<<(line_cols.size());
             num_line++;
         }
 
