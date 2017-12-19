@@ -3,5 +3,5 @@ project(AliSimulator)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES main.cpp)
+set(SOURCE_FILES main.cpp AliTracePreProcessor.h AliTracePreProcessor.cpp)
 add_executable(AliSimulator ${SOURCE_FILES})

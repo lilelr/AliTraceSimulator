@@ -56,8 +56,21 @@ namespace AliSimulator{
 class AliTracePreProcessor {
 
 private:
+   string trace_path_;
 
 public:
+    explicit AliTracePreProcessor(const string& trace_path);
+
+    void JobsNumTasks();
+
+    void Run();
+
+    void CalculateBatchInstanceRuntime();
+    void CalculateServiceInstanceRuntime();
+
+    void PrintInstanceRuntime(bool IsBatch);
+
+
 };
 
 }
