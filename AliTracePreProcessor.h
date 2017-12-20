@@ -32,7 +32,7 @@ namespace AliSimulator{
     struct BatchInstance{
         int64_t  start_timestamp_;
         int64_t  end_timestamp_;
-        int64_t  total_runtime;
+        int64_t  total_runtime_;
         uint64_t  job_id_;
         uint64_t  task_id_;
         int32_t machine_ID_;
@@ -46,14 +46,14 @@ namespace AliSimulator{
 
     };
 
-    struct ServiceInstance{
-        int64_t ts;
+    struct ContainerInstance{
+        int64_t ts_;
         string event_;
         uint64_t instance_id_;
         uint32_t machine_id_;
-        double plan_cpu_;
-        double plan_mem_;
-        double plan_disk_;
+        float plan_cpu_;
+        float plan_mem_;
+        float plan_disk_;
         vector<int32_t> cpuset_;
     };
 

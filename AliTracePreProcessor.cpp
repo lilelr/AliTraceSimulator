@@ -5,6 +5,7 @@
 #include "AliTracePreProcessor.h"
 #include "string_helper.h"
 
+
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
 
@@ -24,7 +25,8 @@ namespace AliSimulator{
 
     void AliTracePreProcessor::Run() {
 
-        CalculateBatchInstanceRuntime();
+//        CalculateBatchInstanceRuntime();
+        CalculateServiceInstanceRuntime();
     }
 
     void AliTracePreProcessor::CalculateBatchInstanceRuntime() {
@@ -95,12 +97,18 @@ namespace AliSimulator{
                             batchInstance.avg_real_cpu_num_ = lexical_cast<float>(line_cols[9]);
 
                         }
-//                    batchInstance.max_mem_usage_ = lexical_cast<float>(line_cols[10]);
+                        batchInstance.max_mem_usage_ = -1;
                         batchInstance.avg_mem_usage_ = -1;
 
-                        // get the total runtime of the current running
-                        if(batchInstance)
-                        batchInstance.total_runtime = batchInstance.end_timestamp_ - batchInstance.start_timestamp_;
+                        // get the total runtime of the current batchInstance of status including
+                        // "Terminated, Cancelled, Interupted"
+                        if(batchInstance.end_timestamp_ > batchInstance.start_timestamp_){
+                            batchInstance.total_runtime_ = batchInstance.end_timestamp_ - batchInstance.start_timestamp_;
+
+//                            LOG(INFO)<<batchInstance.status_<<endl;
+                            fprintf(out_batch_events_file,"%jd,%jd,%jd,%ju,%ju,%d,%s,%d,%d,%f,%f,%f,%f\n",batchInstance.start_timestamp_,batchInstance.end_timestamp_, batchInstance.total_runtime_,batchInstance.job_id_, batchInstance.task_id_, batchInstance.machine_ID_, batchInstance.status_, batchInstance.seq_no_, batchInstance.total_seq_no_,batchInstance.max_real_cpu_num_,batchInstance.avg_real_cpu_num_,batchInstance.max_mem_usage_,batchInstance.avg_mem_usage_);
+                        }
+
                     }catch (bad_cast& e){
                         LOG(INFO)<<e.what()<<endl;
                         LOG(INFO)<<"num line: "<< num_line <<endl;
@@ -118,6 +126,65 @@ namespace AliSimulator{
     }
 
     void AliTracePreProcessor::CalculateServiceInstanceRuntime() {
+        string out_container_events_file_name;
+        spf(&out_container_events_file_name, "%s/container_instance_events.csv", trace_path_.c_str());
+        FILE* out_container_events_file;
+        if((out_container_events_file = fopen(out_container_events_file_name.c_str(), "w")) == NULL){
+            LOG(FATAL)<<"Failed to open container_events file for writing";
+        }else{
+            LOG(INFO)<<"OK, ready to write container_events file";
+        }
+
+        string file_name;
+        spf(&file_name, "%s/container_event.csv",trace_path_.c_str());
+        FILE* container_events_file;
+        if((container_events_file = fopen(file_name.c_str(),"r")) == NULL){
+            LOG(FATAL)<<"Failed to open container_events file for reading";
+        }
+
+        int64_t num_line = 1;
+        char line[200];
+        vector<string> line_cols;
+        unordered_map<uint64_t,ContainerInstance>* containerMap;
+        while(!feof(container_events_file)){
+            if(fscanf(container_events_file, "%[^\n]%*[\n]", &line[0]) > 0){
+                boost::split(line_cols, line, is_any_of(","), token_compress_off);
+                if(line_cols.size() !=9){
+                    LOG(ERROR)<<"Unexpected structure of container event on line"<< num_line<<": found" <<line_cols.size() <<" columns";
+                }else{
+                    ContainerInstance  containerInstance;
+                    try {
+                        containerInstance.ts_ = lexical_cast<int64_t>(line_cols[0]);
+                        containerInstance.event_ = line_cols[1];
+                        containerInstance.instance_id_ = lexical_cast<int64_t>(line_cols[2]);
+                        containerInstance.machine_id_ = lexical_cast<int32_t>(line_cols[3]);
+                        containerInstance.plan_cpu_ = lexical_cast<float>(line_cols[4]);
+                        containerInstance.plan_mem_ = lexical_cast<float>(line_cols[5]);
+                        containerInstance.plan_disk_ = lexical_cast<float>(line_cols[6]);
+                        vector<string> tempstrv;
+                        boost::split(tempstrv,line_cols[7],is_any_of("|"));
+                        for(auto i:tempstrv){
+                            containerInstance.cpuset_.push_back(lexical_cast<int32_t>(i));
+                        }
+//                        conta<<line_cols[7]<<endl;
+                        LOG(INFO)<< containerInstance.machine_id_<<endl;
+////                            LOG(INFO)<<batchInstance.status_<<endl;
+//                            fprintf(container_events_file,"%jd,%jd,%jd,%ju,%ju,%d,%s,%d,%d,%f,%f,%f,%f\n",batchInstance.start_timestamp_,batchInstance.end_timestamp_, batchInstance.total_runtime_,batchInstance.job_id_, batchInstance.task_id_, batchInstance.machine_ID_, batchInstance.status_, batchInstance.seq_no_, batchInstance.total_seq_no_,batchInstance.max_real_cpu_num_,batchInstance.avg_real_cpu_num_,batchInstance.max_mem_usage_,batchInstance.avg_mem_usage_);
+//                        }
+
+                    }catch (bad_cast& e){
+                        LOG(INFO)<<e.what()<<endl;
+                        LOG(INFO)<<"num line: "<< num_line <<endl;
+                    }
+
+
+                }
+            }
+//            LOG(INFO)<<(line_cols.size());
+            num_line++;
+        }
+
+        fclose(container_events_file);
 
     }
 

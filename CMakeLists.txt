@@ -3,6 +3,6 @@ project(AliSimulator)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES main.cpp AliTracePreProcessor.h AliTracePreProcessor.cpp string_helper.cpp string_helper.h)
+set(SOURCE_FILES main.cpp AliTracePreProcessor.h AliTracePreProcessor.cpp string_helper.cpp string_helper.h collection_helper.cpp collection_helper.h)
 add_executable(AliSimulator ${SOURCE_FILES})
 target_link_libraries(AliSimulator LINK_PUBLIC gflags glog)
