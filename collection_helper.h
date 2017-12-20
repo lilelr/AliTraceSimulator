@@ -10,6 +10,7 @@
 
 namespace AliSimulator {
 
+
 // Perform a lookup in a map or hash_map.
 // If the key is present in the map then the value associated with that
 // key is returned, otherwise the value passed as a default is returned.
@@ -130,7 +131,8 @@ namespace AliSimulator {
         typename Collection::const_iterator it = collection.find(key);
         CHECK(it != collection.end()) << "Map key not found: " << key;
         return it->second;
-    }}
+    }
+}
 
 
 #endif //ALISIMULATOR_COLLECTION_HELPER_H

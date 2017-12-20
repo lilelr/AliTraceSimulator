@@ -48,13 +48,14 @@ namespace AliSimulator{
 
     struct ContainerInstance{
         int64_t ts_;
+        int64_t runtime_;
         string event_;
         uint64_t instance_id_;
         uint32_t machine_id_;
-        float plan_cpu_;
+        int32_t plan_cpu_;
         float plan_mem_;
         float plan_disk_;
-        vector<int32_t> cpuset_;
+        string cpuset_;
     };
 
 class AliTracePreProcessor {

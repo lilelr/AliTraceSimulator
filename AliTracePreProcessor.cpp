@@ -4,6 +4,7 @@
 
 #include "AliTracePreProcessor.h"
 #include "string_helper.h"
+#include "collection_helper.h"
 
 
 #include <boost/algorithm/string.hpp>
@@ -120,7 +121,7 @@ namespace AliSimulator{
 //            LOG(INFO)<<(line_cols.size());
             num_line++;
         }
-
+        fclose(out_batch_events_file);
         fclose(batch_events_file);
 
     }
@@ -145,7 +146,7 @@ namespace AliSimulator{
         int64_t num_line = 1;
         char line[200];
         vector<string> line_cols;
-        unordered_map<uint64_t,ContainerInstance>* containerMap;
+        unordered_map<uint64_t , ContainerInstance> containerMap;
         while(!feof(container_events_file)){
             if(fscanf(container_events_file, "%[^\n]%*[\n]", &line[0]) > 0){
                 boost::split(line_cols, line, is_any_of(","), token_compress_off);
@@ -156,21 +157,28 @@ namespace AliSimulator{
                     try {
                         containerInstance.ts_ = lexical_cast<int64_t>(line_cols[0]);
                         containerInstance.event_ = line_cols[1];
-                        containerInstance.instance_id_ = lexical_cast<int64_t>(line_cols[2]);
-                        containerInstance.machine_id_ = lexical_cast<int32_t>(line_cols[3]);
-                        containerInstance.plan_cpu_ = lexical_cast<float>(line_cols[4]);
+                        containerInstance.instance_id_ = lexical_cast<uint64_t>(line_cols[2]);
+                        containerInstance.machine_id_ = lexical_cast<uint32_t >(line_cols[3]);
+                        containerInstance.plan_cpu_ = lexical_cast<int32_t>(line_cols[4]);
                         containerInstance.plan_mem_ = lexical_cast<float>(line_cols[5]);
                         containerInstance.plan_disk_ = lexical_cast<float>(line_cols[6]);
-                        vector<string> tempstrv;
-                        boost::split(tempstrv,line_cols[7],is_any_of("|"));
-                        for(auto i:tempstrv){
-                            containerInstance.cpuset_.push_back(lexical_cast<int32_t>(i));
-                        }
-//                        conta<<line_cols[7]<<endl;
-                        LOG(INFO)<< containerInstance.machine_id_<<endl;
-////                            LOG(INFO)<<batchInstance.status_<<endl;
-//                            fprintf(container_events_file,"%jd,%jd,%jd,%ju,%ju,%d,%s,%d,%d,%f,%f,%f,%f\n",batchInstance.start_timestamp_,batchInstance.end_timestamp_, batchInstance.total_runtime_,batchInstance.job_id_, batchInstance.task_id_, batchInstance.machine_ID_, batchInstance.status_, batchInstance.seq_no_, batchInstance.total_seq_no_,batchInstance.max_real_cpu_num_,batchInstance.avg_real_cpu_num_,batchInstance.max_mem_usage_,batchInstance.avg_mem_usage_);
+                        containerInstance.cpuset_ = line_cols[7];
+//                        vector<string> tempstrv;
+//                        boost::split(tempstrv,line_cols[7],is_any_of("|"));
+//                        for(auto& i:tempstrv){
+//                            containerInstance.cpuset_.push_back(lexical_cast<int32_t>(i));
 //                        }
+//
+                        if(!InsertIfNotPresent(&containerMap,containerInstance.instance_id_,containerInstance)){
+                        // this container has been in the map, calculate its runtime
+                            if(containerInstance.event_ == "Remove"){
+                               ContainerInstance* existedContainer;
+                                FindCopy(containerMap, containerInstance.instance_id_, existedContainer);
+                                containerInstance.runtime_ = containerInstance.ts_ - existedContainer->ts_;
+                                fprintf(out_container_events_file,"%jd,Create,%jd,%ju,%d,%d,%f,%f,%s\n",existedContainer->ts_,containerInstance.runtime_,existedContainer->instance_id_,existedContainer->machine_id_,existedContainer->plan_cpu_,existedContainer->plan_mem_,existedContainer->plan_disk_,existedContainer->cpuset_);
+                            }
+                        }
+
 
                     }catch (bad_cast& e){
                         LOG(INFO)<<e.what()<<endl;
@@ -183,7 +191,7 @@ namespace AliSimulator{
 //            LOG(INFO)<<(line_cols.size());
             num_line++;
         }
-
+        fclose(out_container_events_file);
         fclose(container_events_file);
 
     }
