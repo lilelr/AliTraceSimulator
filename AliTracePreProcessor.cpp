@@ -18,7 +18,7 @@ using boost::lexical_cast;
 using boost::algorithm::is_any_of;
 using boost::token_compress_off;
 
-namespace AliSimulator{
+namespace AliSim{
 
      AliTracePreProcessor::AliTracePreProcessor(const string& trace_path): trace_path_(trace_path) {
 

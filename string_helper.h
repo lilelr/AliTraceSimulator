@@ -10,7 +10,7 @@
 
 using std::string;
 
-namespace AliSimulator{
+namespace AliSim{
     // sprintf-like string formatter
     void spf(string* s, const std::string fmt, ...);
 }

@@ -18,7 +18,7 @@ DEFINE_string(trace_path, "/home/lilelr/trace_201710/", "Path where the trace fi
 
 int main() {
 
-    AliSimulator::AliTracePreProcessor instance_processor(FLAGS_trace_path);
+    AliSim::AliTracePreProcessor instance_processor(FLAGS_trace_path);
     instance_processor.Run();
    cout << "end!" <<endl;
 

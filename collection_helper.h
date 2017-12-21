@@ -8,7 +8,7 @@
 #include <iostream>
 #include <glog/logging.h>
 
-namespace AliSimulator {
+namespace AliSim {
 
 
 // Perform a lookup in a map or hash_map.

@@ -14,7 +14,7 @@
 
 using namespace std;
 
-namespace AliSimulator{
+namespace AliSim{
     struct TaskIdentifier{
 
         uint64_t job_id_;
@@ -57,6 +57,8 @@ namespace AliSimulator{
         float plan_disk_;
         string cpuset_;
     };
+
+
 
 class AliTracePreProcessor {
 

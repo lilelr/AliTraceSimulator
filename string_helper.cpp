@@ -4,7 +4,7 @@
 
 #include "string_helper.h"
 
-namespace AliSimulator {
+namespace AliSim {
     // sprintf-like string formatter
     void spf(string* s, const std::string fmt, ...) {
         int64_t n, size = 100;
