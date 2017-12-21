@@ -1,0 +1,14 @@
+//
+// Created by lilelr on 12/21/17.
+//
+
+#ifndef ALISIMULATOR_SIMULATEDWALLTIME_H
+#define ALISIMULATOR_SIMULATEDWALLTIME_H
+
+
+class SimulatedWallTime {
+
+};
+
+
+#endif //ALISIMULATOR_SIMULATEDWALLTIME_H
