@@ -3,3 +3,29 @@
 //
 
 #include "AliSimulator.h"
+#include "EventHandler.h"
+
+using namespace std;
+
+namespace AliSim{
+    AliSimulator::AliSimulator(SimulatedWallTime simulatedWallTime_) : simulatedWallTime_(simulatedWallTime_) {
+        event_handler_= new EventHandler(&simulatedWallTime_);
+        linker_ = new SimulatorLinker(event_handler_,&simulatedWallTime_);
+        run_cnt_ = 0;
+    }
+
+    AliSimulator::~AliSimulator() {
+          delete linker_;
+        delete event_handler_;
+    }
+
+    void AliSimulator::Run() {
+        ReplaySimulation();
+    }
+
+    void AliSimulator::ReplaySimulation() {
+        while (!simulatedWallTime_.IsStop()){
+
+        }
+    }
+}

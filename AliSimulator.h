@@ -11,41 +11,24 @@
 
 #include "SimulatedWallTime.h"
 #include "SimulatorLinker.h"
-#include "EventHandler.h"
 
-using namespace std;
 
 namespace AliSim{
 
-    enum SERVER_EVENT_TYPE{
-        ADD,
-        SFOT_ERROR,
-        HARD_ERROR
-    };
-
-    struct ServerEvent{
-        uint64_t ts_;
-        int32_t machine_id;
-        SERVER_EVENT_TYPE event_type_;
-        string event_detail_;
-        vector<int> cpus_;
-        float norm_cpu_;
-        float norm_mem_;
-        float norm_disk_;
-
-    };
-
+    class SimulatorLinker;
+    class EventHandler;
     class AliSimulator {
+
     private:
         SimulatorLinker* linker_;
-        EventHandler* eventHandler_;
+        EventHandler* event_handler_;
         SimulatedWallTime simulatedWallTime_;
         uint64_t run_cnt_;
 
         void ReplaySimulation();
     public:
-        AliSimulator();
-
+        explicit AliSimulator(SimulatedWallTime simulatedWallTime_);
+        virtual ~AliSimulator();
         void Run();
 
 

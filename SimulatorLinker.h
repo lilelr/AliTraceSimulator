@@ -18,21 +18,25 @@
 using  namespace std;
 
 namespace AliSim{
+    class EventHandler;
+
     class SimulatorLinker {
 
     private:
         EventHandler* event_handler_;
-        SimulatedWallTime simulated_time_;
+        SimulatedWallTime* simulated_time_;
         multimap<uint64_t,ServerEvent> server_events_map_;
         multimap<uint64_t, TaskIdentifier> task_events_map_;
         multimap<uint64_t, BatchInstance> batch_instance_events_map_;
 
-        ResourceRecord resourceRecord;
+        ResourceRecord resource_record_;
 
     public:
-        explicit SimulatorLinker(EventHandler* eventHandler,SimulatedWallTime simulatedWallTime);
+        explicit SimulatorLinker(EventHandler* eventHandler,SimulatedWallTime* simulatedWallTime);
 
-        void LoadTraceData(AliTraceLoader* trace_loader);
+        virtual ~SimulatorLinker();
+
+//        void LoadTraceData(AliTraceLoader* trace_loader);
 
 
         ResourceStatus* AddServer(uint64_t server_id);

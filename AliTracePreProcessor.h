@@ -58,9 +58,28 @@ namespace AliSim{
         string cpuset_;
     };
 
+    enum SERVER_EVENT_TYPE{
+        ADD,
+        SOFT_ERROR,
+        HARD_ERROR
+    };
+
+    struct ServerEvent{
+        uint64_t ts_;
+        int32_t machine_id;
+        SERVER_EVENT_TYPE event_type_;
+        string event_detail_;
+        vector<int> cpus_;
+        float norm_cpu_;
+        float norm_mem_;
+        float norm_disk_;
+
+    };
 
 
-class AliTracePreProcessor {
+
+
+    class AliTracePreProcessor {
 
 private:
    string trace_path_;

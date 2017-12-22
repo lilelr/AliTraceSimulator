@@ -26,14 +26,13 @@ namespace AliSim{
 
 
     public:
-        explicit EventHandler(SimulatedWallTime simulated_time);
+        explicit EventHandler(SimulatedWallTime* simulated_time);
 
         void AddEvent(uint64_t timestamp);
 
         uint64_t  GetTimeOfNextEvent(uint64_t cur_run_time);
 
-        // stop the simulation at the specified time
-        void StopSimulationAtSpecifiedTime(uint64_t timestamp);
+
     };
 }
 

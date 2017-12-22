@@ -11,14 +11,17 @@ namespace AliSim{
     class SimulatedWallTime {
     private:
         uint64_t current_simulation_ts_;
+        uint64_t stop_time_;
 
     public:
-        SimulatedWallTime();
+        explicit SimulatedWallTime(uint64_t stop_time);
 
         uint64_t GetCurrentTimeStamp();
         // // update the current wall time because it is earlier than the timestamp of next event
 
         uint64_t UpdateCurrentTimeStamp(uint64_t event_timestamp);
+
+        bool IsStop();
 
     };
 }

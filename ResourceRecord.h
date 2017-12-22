@@ -7,26 +7,28 @@
 
 
 #include <cstdint>
+#include <iostream>
 #include <map>
-#include <bits/unordered_map.h>
+#include <unordered_map>
 
 #include "ResourceStatus.h"
 
 using namespace std;
+namespace AliSim {
 
-class ResourceRecord {
+    class ResourceRecord {
 
-private:
-    unordered_map<int32_t,ResourceStatus> server_map_;
-
-
-  public:
-    ResourceRecord();
-    void UpdatServerResourceStatus();
+    private:
+        unordered_map<int32_t, ResourceStatus> server_map_;
 
 
+    public:
+        explicit ResourceRecord();
 
-};
+        void UpdatServerResourceStatus();
 
+
+    };
+}
 
 #endif //ALISIMULATOR_RESOURCERECORD_H

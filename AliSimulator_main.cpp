@@ -14,6 +14,7 @@
 #include <gflags/gflags.h>
 
 #include "AliTracePreProcessor.h"
+#include "AliSimulator.h"
 
 using namespace std;
 
@@ -21,9 +22,9 @@ DEFINE_string(trace_path, "/home/lilelr/trace_201710/", "Path where the trace fi
 
 
 int main() {
-
-
-
+        AliSim::SimulatedWallTime simulatedWallTime(10000000);
+        AliSim::AliSimulator aliSimulator(simulatedWallTime);
+        aliSimulator.Run();
 
     return 0;
 }

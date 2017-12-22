@@ -3,3 +3,8 @@
 //
 
 #include "ResourceRecord.h"
+namespace AliSim{
+    ResourceRecord::ResourceRecord(){
+
+    }
+}
