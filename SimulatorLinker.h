@@ -19,7 +19,7 @@ using  namespace std;
 
 namespace AliSim{
     class EventHandler;
-
+    class AliTraceLoader;
     class SimulatorLinker {
 
     private:
@@ -36,7 +36,7 @@ namespace AliSim{
 
         virtual ~SimulatorLinker();
 
-//        void LoadTraceData(AliTraceLoader* trace_loader);
+        void LoadTraceData(AliTraceLoader* trace_loader);
 
 
         ResourceStatus* AddServer(uint64_t server_id);

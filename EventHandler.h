@@ -30,6 +30,8 @@ namespace AliSim{
 
         void AddEvent(uint64_t timestamp);
 
+        void LoadInitialMachineEvents(multimap<uint64_t,ServerEvent>* server_events_map);
+
         uint64_t  GetTimeOfNextEvent(uint64_t cur_run_time);
 
 

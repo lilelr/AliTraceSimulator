@@ -25,7 +25,7 @@ namespace AliSim {
     public:
         explicit ResourceRecord();
 
-        void UpdatServerResourceStatus();
+        void UpdateServerResourceStatus();
 
 
     };
