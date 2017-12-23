@@ -18,7 +18,9 @@ namespace AliSim{
 
     void SimulatorLinker::LoadTraceData(AliTraceLoader *trace_loader) {
         trace_loader->LoadServerEvents(&server_events_map_);
+        trace_loader->LoadTaskEvent(&task_events_map_);
 
+        // loads the initialized machine resources and then erases it from server_events_map_ because we don't need it anymore
         auto zero_sever_events = server_events_map_.count(0);
         auto iter = server_events_map_.find(0);
         while (zero_sever_events){
@@ -26,6 +28,9 @@ namespace AliSim{
             ++iter;
             --zero_sever_events;
         }
+        server_events_map_.erase(0);
+
+
     }
 
     ResourceStatus* SimulatorLinker::AddServer(int32_t server_id, ServerEvent& server_event) {
