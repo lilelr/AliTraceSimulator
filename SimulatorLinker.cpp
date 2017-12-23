@@ -34,7 +34,18 @@ namespace AliSim{
 
     }
 
-    ResourceStatus* SimulatorLinker::AddServer(int32_t server_id, ServerEvent& server_event) {
+    void SimulatorLinker::handleEventsOfCurrentTimeStamp() {
+        uint64_t cur_sim_ts = simulated_time_->GetCurrentTimeStamp();
+
+        auto tasks_count_current_ts = task_events_map_.count(cur_sim_ts);
+        auto task_events_map_iter = task_events_map_.find(tasks_count_current_ts);
+        while (tasks_count_current_ts){
+            AddTask(task_events_map_iter->second);
+            tasks_count_current_ts--;
+        }
+    }
+
+     void SimulatorLinker::AddServer(int32_t server_id, ServerEvent& server_event) {
         ResourceStatus resource_status;
         resource_status.ts_ = server_event.ts_;
         resource_status.machine_id_ = server_event.machine_id_;
@@ -46,6 +57,22 @@ namespace AliSim{
         resource_status.used_mem_ = 0;
 
         resource_record_.GetServerMap()->insert(pair<int32_t ,ResourceStatus>(server_id,resource_status));
-        return &resource_status;
+    }
+
+    void SimulatorLinker::AddTask(TaskIdentifier& task_identifier) {
+        // <key, value> (task_end_time, TaskIdentifier
+        // TODO: handle different status of the status(waiting, terminated, etc.)
+        current_tasks_map_.insert(pair<uint64_t, TaskIdentifier>(task_identifier.modify_timestamp_,task_identifier));
+    }
+
+    void SimulatorLinker::onTaskFinished(uint64_t ts) {
+        auto count_current_tasks_ts = current_tasks_map_.count(ts);
+        if(count_current_tasks_ts > 0){
+            auto current_tasks_iter = current_tasks_map_.find(ts);
+            while (count_current_tasks_ts){
+
+                count_current_tasks_ts--;
+            }
+        }
     }
 }

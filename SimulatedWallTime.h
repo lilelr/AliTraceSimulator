@@ -21,6 +21,8 @@ namespace AliSim{
 
         uint64_t UpdateCurrentTimeStamp(uint64_t event_timestamp);
 
+        uint64_t IncreaseCurrentTimeStampByOneSec();
+
         bool IsStop();
 
     };

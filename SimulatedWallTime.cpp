@@ -7,6 +7,8 @@
 
 namespace AliSim{
     SimulatedWallTime::SimulatedWallTime(uint64_t stop_time) {
+        // set beginning time at 0
+        this->current_simulation_ts_=0;
         this->stop_time_ = stop_time;
     }
 
@@ -15,5 +17,10 @@ namespace AliSim{
             return true;
         }
         return false;
+    }
+
+    uint64_t SimulatedWallTime::IncreaseCurrentTimeStampByOneSec() {
+        current_simulation_ts_++;
+        return current_simulation_ts_;
     }
 }

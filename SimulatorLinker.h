@@ -28,6 +28,9 @@ namespace AliSim{
         multimap<uint64_t, TaskIdentifier> task_events_map_;
         multimap<uint64_t, BatchInstance> batch_instance_events_map_;
 
+        multimap<uint64_t, TaskIdentifier> current_tasks_map_;
+        multimap<uint64_t ,BatchInstance> current_batch_instance_map_;
+
         ResourceRecord resource_record_;
 
     public:
@@ -37,16 +40,17 @@ namespace AliSim{
 
         void LoadTraceData(AliTraceLoader* trace_loader);
 
-
-        ResourceStatus* AddServer(int32_t server_id, ServerEvent& server_event);
+        void handleEventsOfCurrentTimeStamp();
+        void AddServer(int32_t server_id, ServerEvent& server_event);
         void RemoveServer(uint64_t server_id);
         void AddServerSnapShot(uint64_t current_time);
-        void AddTask(uint64_t& task_id, TaskIdentifier& task_identifier);
+        void AddTask(TaskIdentifier& task_identifier);
+
 
         void onJobFinished(uint64_t job_id);
         void onJobFailure(uint64_t job_id);
 
-        void onTaskFinished(uint64_t task_id);
+        void onTaskFinished(uint64_t ts);
         void onTaskFailure(uint64_t task_id);
 
         void onBatchInstanceReady(TaskIdentifier* task_identifier);

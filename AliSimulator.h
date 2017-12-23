@@ -22,7 +22,7 @@ namespace AliSim{
     private:
         SimulatorLinker* linker_;
         EventHandler* event_handler_;
-        SimulatedWallTime simulatedWallTime_;
+        SimulatedWallTime simulated_wall_time_;
         AliTraceLoader ali_trace_loader_;
         uint64_t run_cnt_;
 
