@@ -8,7 +8,6 @@
 #include <string>
 #include <map>
 
-#include "AliSimulator.h"
 #include "AliTracePreProcessor.h"
 
 using namespace std;
@@ -18,6 +17,7 @@ namespace AliSim{
     private:
         string trace_path_;
     public:
+        AliTraceLoader();
         explicit AliTraceLoader(string trace_path);
 
         void LoadServerEvents(multimap<uint64_t,ServerEvent>* server_events_map);

@@ -12,7 +12,7 @@ using std::string;
 
 namespace AliSim{
     // sprintf-like string formatter
-    void spf(string* s, const std::string fmt, ...);
+    void spf(string* s, const string fmt, ...);
 }
 
 

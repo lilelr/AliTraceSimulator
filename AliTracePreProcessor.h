@@ -66,7 +66,7 @@ namespace AliSim{
 
     struct ServerEvent{
         uint64_t ts_;
-        int32_t machine_id;
+        int32_t machine_id_;
         SERVER_EVENT_TYPE event_type_;
         string event_detail_;
         vector<int> cpus_;

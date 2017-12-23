@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "SimulatedWallTime.h"
-#include "SimulatorLinker.h"
+#include "AliTraceLoader.h"
 
 
 namespace AliSim{
@@ -23,11 +23,14 @@ namespace AliSim{
         SimulatorLinker* linker_;
         EventHandler* event_handler_;
         SimulatedWallTime simulatedWallTime_;
+        AliTraceLoader ali_trace_loader_;
         uint64_t run_cnt_;
 
         void ReplaySimulation();
     public:
-        explicit AliSimulator(SimulatedWallTime simulatedWallTime_);
+        explicit AliSimulator(SimulatedWallTime simulatedWallTime_,AliTraceLoader aliTraceLoader);
+
+
         virtual ~AliSimulator();
         void Run();
 

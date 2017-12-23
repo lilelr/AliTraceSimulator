@@ -19,7 +19,6 @@ using  namespace std;
 
 namespace AliSim{
     class EventHandler;
-    class AliTraceLoader;
     class SimulatorLinker {
 
     private:

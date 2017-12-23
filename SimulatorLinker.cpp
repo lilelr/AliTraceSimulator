@@ -15,4 +15,8 @@ namespace AliSim{
         delete event_handler_;
         delete simulated_time_;
     }
+
+    void SimulatorLinker::LoadTraceData(AliTraceLoader *trace_loader) {
+        trace_loader->LoadServerEvents(&server_events_map_);
+    }
 }
