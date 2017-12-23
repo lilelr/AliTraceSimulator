@@ -70,7 +70,7 @@ namespace AliSim {
                     }
                 }
             }
-            LOG(INFO) << "read num line: " << num_line << endl;
+//            LOG(INFO) << "read num line: " << num_line << endl;
             num_line++;
         }
 //            LOG(INFO)<<(line_cols.size());

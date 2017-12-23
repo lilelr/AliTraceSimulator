@@ -26,6 +26,8 @@ namespace AliSim {
         explicit ResourceRecord();
 
         void UpdateServerResourceStatus();
+        unordered_map<int32_t, ResourceStatus>* GetServerMap();
+
 
 
     };

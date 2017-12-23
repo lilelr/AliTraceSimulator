@@ -38,7 +38,7 @@ namespace AliSim{
         void LoadTraceData(AliTraceLoader* trace_loader);
 
 
-        ResourceStatus* AddServer(uint64_t server_id);
+        ResourceStatus* AddServer(int32_t server_id, ServerEvent& server_event);
         void RemoveServer(uint64_t server_id);
         void AddServerSnapShot(uint64_t current_time);
         void AddTask(uint64_t& task_id, TaskIdentifier& task_identifier);

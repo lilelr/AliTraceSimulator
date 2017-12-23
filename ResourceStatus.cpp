@@ -3,3 +3,9 @@
 //
 
 #include "ResourceStatus.h"
+
+namespace AliSim {
+    ResourceStatus::ResourceStatus() {
+
+    }
+}
