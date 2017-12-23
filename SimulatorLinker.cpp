@@ -19,6 +19,7 @@ namespace AliSim{
     void SimulatorLinker::LoadTraceData(AliTraceLoader *trace_loader) {
         trace_loader->LoadServerEvents(&server_events_map_);
         trace_loader->LoadTaskEvent(&task_events_map_);
+        trace_loader->LoadBatchInstanceEvent(&batch_instance_events_map_);
 
         // loads the initialized machine resources and then erases it from server_events_map_ because we don't need it anymore
         auto zero_sever_events = server_events_map_.count(0);

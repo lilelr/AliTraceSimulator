@@ -81,8 +81,54 @@ namespace AliSim {
 
 
 
-void AliTraceLoader::LoadBatchInstanceEvent(multimap<uint64_t, BatchInstance> *batch_instance_events_map) {
+void AliTraceLoader::LoadBatchInstanceEvent(multimap<uint64_t, BatchInstance>* batch_instance_events_map) {
+    string file_name;
+//        spf(&file_name, "%s/server_event.csv", trace_path_.c_str());
+    file_name = trace_path_+"/batch_instance_events.csv";
+    FILE* batch_instance_file;
+    if ((batch_instance_file = fopen(file_name.c_str(), "r")) == nullptr) {
+        LOG(FATAL) << "Failed to open batch_instance file for reading";
+    }
 
+    int64_t num_line = 1;
+    char line[200];
+    vector<string> line_cols;
+    while (!feof(batch_instance_file)) {
+        if (fscanf(batch_instance_file, "%[^\n]%*[\n]", &line[0]) > 0) {
+            boost::split(line_cols, line, is_any_of(","), token_compress_off);
+            if (line_cols.size() != 13) {
+                LOG(ERROR) << "Unexpected structure of batch instance on line" << num_line << ": found "
+                           << line_cols.size() << " columns";
+            } else {
+                BatchInstance batch_instance;
+                try {
+                  batch_instance.start_timestamp_ = lexical_cast<int64_t >(line_cols[0]);
+                    batch_instance.end_timestamp_ = lexical_cast<int64_t > (line_cols[1]);
+                    batch_instance.total_runtime_ = lexical_cast<int64_t >(line_cols[2]);
+                    batch_instance.job_id_ = lexical_cast<uint64_t>(line_cols[3]);
+                    batch_instance.task_id_ = lexical_cast<uint64_t>(line_cols[4]);
+                    batch_instance.machine_ID_ = lexical_cast<int32_t>(line_cols[5]);
+                    batch_instance.status_ = line_cols[6];
+                    batch_instance.seq_no_ = lexical_cast<int32_t>(line_cols[7]);
+                    batch_instance.total_seq_no_=lexical_cast<int32_t>(line_cols[8]);
+                    batch_instance.max_real_cpu_num_= lexical_cast<float>(line_cols[9]);
+                    batch_instance.avg_real_cpu_num_ = lexical_cast<float>(line_cols[10]);
+                    batch_instance.max_mem_usage_ = lexical_cast<float>(line_cols[11]);
+                    batch_instance.avg_mem_usage_ = lexical_cast<float>(line_cols[12]);
+
+                    batch_instance_events_map->insert(pair<uint64_t ,BatchInstance>(batch_instance.start_timestamp_, batch_instance));
+
+                } catch (bad_cast& e) {
+                    LOG(INFO) << e.what() << endl;
+                    LOG(INFO) << "num line: " << num_line << endl;
+                }
+            }
+        }
+//            LOG(INFO) << "read num line: " << num_line << endl;
+        num_line++;
+    }
+//            LOG(INFO)<<(line_cols.size());
+    fclose(batch_instance_file);
 }
 
 void AliTraceLoader::LoadTaskEvent(multimap<uint64_t, TaskIdentifier>* task_events_map) {
