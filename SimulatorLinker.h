@@ -27,11 +27,23 @@ namespace AliSim{
         multimap<uint64_t,ServerEvent> server_events_map_;
         multimap<uint64_t, TaskIdentifier> task_events_map_;
         multimap<uint64_t, BatchInstance> batch_instance_events_map_;
+        unordered_map<uint64_t ,TaskIdentifier> tasks_map_;
 
         multimap<uint64_t, TaskIdentifier> current_tasks_map_;
         multimap<uint64_t ,BatchInstance> current_batch_instance_map_;
 
         ResourceRecord resource_record_;
+
+        void onBatchInstanceReady(BatchInstance* batchInstance);
+        void onBatchInstanceWaiting(BatchInstance* batchInstance);
+        void onBatchInstanceRunning(BatchInstance* batchInstance);
+        void onBatchInstanceTerminated(BatchInstance* batchInstance);
+        void onBatchInstanceFailed(BatchInstance* batchInstance);
+        void onBatchInstanceCancelled(BatchInstance* batchInstance);
+        void onBatchInstanceInterrupted(BatchInstance* batchInstance);
+
+        void onBatchInstanceFinished(uint64_t ts);
+
 
     public:
         explicit SimulatorLinker(EventHandler* eventHandler,SimulatedWallTime* simulatedWallTime);
@@ -39,6 +51,8 @@ namespace AliSim{
         virtual ~SimulatorLinker();
 
         void LoadTraceData(AliTraceLoader* trace_loader);
+
+        void ConstructTasksMap();
 
         void HandleEventsOfCurrentTimeStamp();
         void AddServer(int32_t server_id, ServerEvent& server_event);
@@ -53,12 +67,8 @@ namespace AliSim{
         void onTaskFinished(uint64_t ts);
         void onTaskFailure(uint64_t task_id);
 
-        void onBatchInstanceReady(TaskIdentifier* task_identifier);
-        void onBatchInstanceWaiting(TaskIdentifier* task_identifier);
-        void onBatchInstanceRunning(TaskIdentifier* task_identifier);
-        void onBatchInstanceTerminated(TaskIdentifier* task_identifier);
-        void onBatchInstanceFailed(TaskIdentifier* task_identifier);
-        void onBatchInstanceCancelled(TaskIdentifier* task_identifier);
+        void AddBatchInstance(BatchInstance& batchInstance);
+
 
 
     };

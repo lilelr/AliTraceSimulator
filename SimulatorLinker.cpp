@@ -20,6 +20,7 @@ namespace AliSim{
     void SimulatorLinker::LoadTraceData(AliTraceLoader *trace_loader) {
         trace_loader->LoadServerEvents(&server_events_map_);
         trace_loader->LoadTaskEvent(&task_events_map_);
+        ConstructTasksMap();
         trace_loader->LoadBatchInstanceEvent(&batch_instance_events_map_);
 
         // loads the initialized machine resources and then erases it from server_events_map_ because we don't need it anymore
@@ -31,8 +32,12 @@ namespace AliSim{
             --zero_sever_events;
         }
         server_events_map_.erase(0);
+    }
 
-
+    void SimulatorLinker::ConstructTasksMap() {
+        for(auto it = task_events_map_.begin();it!=task_events_map_.end();++it){
+            tasks_map_.insert({it->second.task_id_, it->second});
+        }
     }
 
     void SimulatorLinker::HandleEventsOfCurrentTimeStamp() {
@@ -47,7 +52,92 @@ namespace AliSim{
         }
 
         onTaskFinished(cur_sim_ts);
+
+        auto count_batch_instance_cur_ts = batch_instance_events_map_.count(cur_sim_ts);
+        if(count_batch_instance_cur_ts){
+            auto batch_instance_map_iter = batch_instance_events_map_.find(cur_sim_ts);
+            while (count_batch_instance_cur_ts){
+                AddBatchInstance(batch_instance_map_iter->second);
+                string instance_status = batch_instance_map_iter->second.status_;
+//                if(instance_status == "Ready"){
+//                    onBatchInstanceReady(&batch_instance_map_iter->second);
+//                }else if(instance_status == "Waiting"){
+//                    onBatchInstanceWaiting(&batch_instance_map_iter->second);
+//                }else if(instance_status == "Running"){
+//                    onBatchInstanceRunning(&batch_instance_map_iter->second);
+//                }else if(instance_status == "Terminated"){
+//                    onBatchInstanceTerminated(&batch_instance_map_iter->second);
+//                }else if(instance_status == "Failed"){
+//                    onBatchInstanceFailed(&batch_instance_map_iter->second);
+//                }else if(instance_status == "Cancelled"){
+//                    onBatchInstanceCancelled(&batch_instance_map_iter->second);
+//                }else{
+//                    //"Interupted"
+//                    onBatchInstanceInterrupted(&batch_instance_map_iter->second);
+//                }
+
+                count_batch_instance_cur_ts--;
+            }
+        }
+
+        onBatchInstanceFinished(cur_sim_ts);
+
     }
+
+    void SimulatorLinker::AddBatchInstance(BatchInstance& batchInstance) {
+        current_batch_instance_map_.insert({batchInstance.end_timestamp_,batchInstance});
+    }
+
+    void SimulatorLinker::onBatchInstanceReady(BatchInstance *batchInstance) {
+
+    }
+
+    void SimulatorLinker::onBatchInstanceWaiting(BatchInstance *batchInstance) {
+
+    }
+
+    void SimulatorLinker::onBatchInstanceRunning(BatchInstance *batchInstance) {
+
+    }
+
+    void SimulatorLinker::onBatchInstanceTerminated(BatchInstance *batchInstance) {
+
+
+    }
+
+    void SimulatorLinker::onBatchInstanceFailed(BatchInstance *batchInstance) {
+
+    }
+
+    void SimulatorLinker::onBatchInstanceCancelled(BatchInstance *batchInstance) {
+
+    }
+
+    void SimulatorLinker::onBatchInstanceInterrupted(BatchInstance *batchInstance) {
+
+    }
+
+    void SimulatorLinker::onBatchInstanceFinished(uint64_t ts) {
+        auto count_current_instance_ts = current_batch_instance_map_.count(ts);
+        if(count_current_instance_ts > 0){
+            auto current_instance_iter = current_batch_instance_map_.find(ts);
+            while (count_current_instance_ts){
+                if(current_instance_iter->second.status_ == "Terminated" || current_instance_iter->second.status_ == "Failed" || current_instance_iter->second.status_ == "Cancelled" || current_instance_iter->second.status_ == "Interrupted"){
+//                    auto previous_iter = current_tasks_iter;
+//                    previous_iter--;
+                    current_batch_instance_map_.erase(current_instance_iter);
+                    current_instance_iter = current_batch_instance_map_.find(ts);
+//                    current_tasks_iter = previous_iter;
+                    LOG(INFO)<< "remove "<<current_instance_iter->second.task_id_<<" tasks at "<<ts<<endl;
+                }else{
+                    ++current_instance_iter;
+                }
+
+                --count_current_instance_ts;
+            }
+        }
+    }
+
 
      void SimulatorLinker::AddServer(int32_t server_id, ServerEvent& server_event) {
         ResourceStatus resource_status;
