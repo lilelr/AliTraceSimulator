@@ -12,6 +12,7 @@
 #include <unordered_map>
 
 #include "ResourceStatus.h"
+#include "AliTracePreProcessor.h"
 
 using namespace std;
 namespace AliSim {
@@ -20,13 +21,15 @@ namespace AliSim {
 
     private:
         unordered_map<int32_t, ResourceStatus> server_map_;
-
+        unordered_map<int32_t , vector<BatchInstanceIdentifier> > machine_instance_map_;
 
     public:
         explicit ResourceRecord();
 
-        void UpdateServerResourceStatus();
+        void UpdateServerResourceStatus(BatchInstance* batchInstance, float avg_memory);
         unordered_map<int32_t, ResourceStatus>* GetServerMap();
+
+        void UpdateServerInstanceStatus(int32_t machine_ID, int64_t end_ts, uint64_t task_id, int32_t seq_no);
 
 
 

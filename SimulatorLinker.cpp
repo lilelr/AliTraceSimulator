@@ -86,6 +86,13 @@ namespace AliSim{
 
     void SimulatorLinker::AddBatchInstance(BatchInstance& batchInstance) {
         current_batch_instance_map_.insert({batchInstance.end_timestamp_,batchInstance});
+
+        // updates the resource status  of the machine specified by the batchInstance
+        auto& task_ref = tasks_map_.at(batchInstance.task_id_);
+        float avg_memory = task_ref.plan_men_;
+        resource_record_.UpdateServerResourceStatus(&batchInstance,avg_memory);
+        resource_record_.UpdateServerInstanceStatus(batchInstance.machine_ID_, batchInstance.end_timestamp_, batchInstance.task_id_, batchInstance.seq_no_);
+
     }
 
     void SimulatorLinker::onBatchInstanceReady(BatchInstance *batchInstance) {

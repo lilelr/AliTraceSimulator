@@ -24,8 +24,8 @@ namespace AliSim{
 
         int32_t instance_num_;
         string status_;
-        double plan_cpu_;
-        double plan_men_;
+        float plan_cpu_;
+        float plan_men_;
 
     };
 
@@ -74,6 +74,13 @@ namespace AliSim{
         float norm_mem_;
         float norm_disk_;
 
+    };
+
+    struct BatchInstanceIdentifier{
+        int64_t end_ts_;
+        int32_t machine_id_;
+        uint64_t task_id_;
+        int32_t seq_no_;
     };
 
 
