@@ -4,7 +4,7 @@
 
 #include "SimulatorLinker.h"
 #include "ResourceRecord.h"
-
+#include "glog/logging.h"
 
 namespace AliSim{
     SimulatorLinker::SimulatorLinker(EventHandler* eventHandler,SimulatedWallTime* simulatedWallTime){
@@ -38,6 +38,7 @@ namespace AliSim{
     void SimulatorLinker::HandleEventsOfCurrentTimeStamp() {
         uint64_t cur_sim_ts = simulated_time_->GetCurrentTimeStamp();
 
+        LOG(INFO)<< "the cluster has "<<current_tasks_map_.size()<<" tasks at "<<cur_sim_ts<<endl;
         auto tasks_count_current_ts = task_events_map_.count(cur_sim_ts);
         auto task_events_map_iter = task_events_map_.find(cur_sim_ts);
         while (tasks_count_current_ts){
@@ -74,10 +75,17 @@ namespace AliSim{
             auto current_tasks_iter = current_tasks_map_.find(ts);
             while (count_current_tasks_ts){
                 if(current_tasks_iter->second.status_ == "Terminated" || current_tasks_iter->second.status_ == "Failed" || current_tasks_iter->second.status_ == "Cancelled" || current_tasks_iter->second.status_ == "Interrupted"){
+//                    auto previous_iter = current_tasks_iter;
+//                    previous_iter--;
                     current_tasks_map_.erase(current_tasks_iter);
+                    current_tasks_iter = current_tasks_map_.find(ts);
+//                    current_tasks_iter = previous_iter;
+                    LOG(INFO)<< "remove "<<current_tasks_iter->second.task_id_<<" tasks at "<<ts<<endl;
+                }else{
+                    ++current_tasks_iter;
                 }
-                current_tasks_iter++;
-                count_current_tasks_ts--;
+
+                --count_current_tasks_ts;
             }
         }
     }
