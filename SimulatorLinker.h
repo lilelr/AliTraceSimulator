@@ -40,7 +40,7 @@ namespace AliSim{
 
         void LoadTraceData(AliTraceLoader* trace_loader);
 
-        void handleEventsOfCurrentTimeStamp();
+        void HandleEventsOfCurrentTimeStamp();
         void AddServer(int32_t server_id, ServerEvent& server_event);
         void RemoveServer(uint64_t server_id);
         void AddServerSnapShot(uint64_t current_time);

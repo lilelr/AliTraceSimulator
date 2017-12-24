@@ -168,7 +168,7 @@ void AliTraceLoader::LoadTaskEvent(multimap<uint64_t, TaskIdentifier>* task_even
                         task_identifier.plan_cpu_ = -1;
                         task_identifier.plan_men_ = -1;
                     }
-                    task_events_map->insert(pair<uint64_t, TaskIdentifier>(task_identifier.task_id_, task_identifier));
+                    task_events_map->insert(pair<uint64_t, TaskIdentifier>(task_identifier.create_timestamp_, task_identifier));
 //                            LOG(INFO)<<batchInstance.status_<<endl;
                 } catch (bad_cast& e) {
                     LOG(INFO) << e.what() << endl;

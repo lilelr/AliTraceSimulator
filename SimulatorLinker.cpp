@@ -8,7 +8,8 @@
 
 namespace AliSim{
     SimulatorLinker::SimulatorLinker(EventHandler* eventHandler,SimulatedWallTime* simulatedWallTime){
-
+       event_handler_ = eventHandler;
+        simulated_time_ = simulatedWallTime;
     }
 
     SimulatorLinker::~SimulatorLinker() {
@@ -34,15 +35,17 @@ namespace AliSim{
 
     }
 
-    void SimulatorLinker::handleEventsOfCurrentTimeStamp() {
+    void SimulatorLinker::HandleEventsOfCurrentTimeStamp() {
         uint64_t cur_sim_ts = simulated_time_->GetCurrentTimeStamp();
 
         auto tasks_count_current_ts = task_events_map_.count(cur_sim_ts);
-        auto task_events_map_iter = task_events_map_.find(tasks_count_current_ts);
+        auto task_events_map_iter = task_events_map_.find(cur_sim_ts);
         while (tasks_count_current_ts){
             AddTask(task_events_map_iter->second);
             tasks_count_current_ts--;
         }
+
+        onTaskFinished(cur_sim_ts);
     }
 
      void SimulatorLinker::AddServer(int32_t server_id, ServerEvent& server_event) {
@@ -70,7 +73,10 @@ namespace AliSim{
         if(count_current_tasks_ts > 0){
             auto current_tasks_iter = current_tasks_map_.find(ts);
             while (count_current_tasks_ts){
-
+                if(current_tasks_iter->second.status_ == "Terminated" || current_tasks_iter->second.status_ == "Failed" || current_tasks_iter->second.status_ == "Cancelled" || current_tasks_iter->second.status_ == "Interrupted"){
+                    current_tasks_map_.erase(current_tasks_iter);
+                }
+                current_tasks_iter++;
                 count_current_tasks_ts--;
             }
         }

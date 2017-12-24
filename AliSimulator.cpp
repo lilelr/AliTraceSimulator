@@ -5,13 +5,15 @@
 #include "AliSimulator.h"
 #include "EventHandler.h"
 #include "SimulatorLinker.h"
+#include "glog/logging.h"
 
 using namespace std;
 
 namespace AliSim{
-    AliSimulator::AliSimulator(SimulatedWallTime simulatedWallTime_,AliTraceLoader aliTraceLoader) : simulated_wall_time_(simulatedWallTime_),ali_trace_loader_(aliTraceLoader) {
-        event_handler_= new EventHandler(&simulatedWallTime_);
-        linker_ = new SimulatorLinker(event_handler_, &simulatedWallTime_);
+
+    AliSimulator::AliSimulator(SimulatedWallTime simulatedWallTime,AliTraceLoader aliTraceLoader) : simulated_wall_time_(simulatedWallTime),ali_trace_loader_(aliTraceLoader) {
+        event_handler_= new EventHandler(&simulated_wall_time_);
+        linker_ = new SimulatorLinker(event_handler_, &simulated_wall_time_);
         run_cnt_ = 0;
     }
 
@@ -32,11 +34,10 @@ namespace AliSim{
         linker_->LoadTraceData(&ali_trace_loader_);
 
         // simulation starts
-        while (simulated_wall_time_.GetCurrentTimeStamp() < 1000){
+        while (simulated_wall_time_.GetCurrentTimeStamp() < 6600){
             simulated_wall_time_.IncreaseCurrentTimeStampByOneSec();
-
+            linker_->HandleEventsOfCurrentTimeStamp();
         }
-
     }
 
 
