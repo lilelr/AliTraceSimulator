@@ -122,7 +122,7 @@ namespace AliSim {
     }
 
     void SimulatorLinker::onBatchInstanceInterrupted(BatchInstance *batchInstance) {
-
+        // TODO
     }
 
     void SimulatorLinker::onBatchInstanceFinished(uint64_t ts) {
