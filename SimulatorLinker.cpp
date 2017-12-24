@@ -136,7 +136,6 @@ namespace AliSim {
                     current_instance_iter->second.status_ == "Interrupted") {
 //                    auto previous_iter = current_tasks_iter;
 //                    previous_iter--;
-
                     // updates the resource status  of the machine specified by the batchInstance
                     auto &task_ref = tasks_map_.at(current_instance_iter->second.task_id_);
                     float avg_memory = task_ref.plan_men_;
