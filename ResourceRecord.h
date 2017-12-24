@@ -26,10 +26,10 @@ namespace AliSim {
     public:
         explicit ResourceRecord();
 
-        void UpdateServerResourceStatus(BatchInstance* batchInstance, float avg_memory);
+        void UpdateServerResourceStatus(const int32_t& action, BatchInstance* batchInstance, float avg_memory);
         unordered_map<int32_t, ResourceStatus>* GetServerMap();
 
-        void UpdateServerInstanceStatus(int32_t machine_ID, int64_t end_ts, uint64_t task_id, int32_t seq_no);
+        void UpdateServerInstanceStatus(const int32_t& action,int32_t machine_ID, int64_t end_ts, uint64_t task_id, int32_t seq_no);
 
 
 
