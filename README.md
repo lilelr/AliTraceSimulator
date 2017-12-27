@@ -1,6 +1,7 @@
 # AliTraceSimulator
-#### AliTrace Simulator is a simulator that could simulate events of tasks or severs in
-the Aliyun's cluster using the 24 hours' trace data, ClusterData201708 （https://goo.gl/forms/eOoe6DwZQpd2H5n53）.  The events contain
+AliTrace Simulator is a simulator that could simulate events of tasks or severs in
+the Aliyun's cluster using the 24 hours' trace data, ClusterData201708 （https://goo.gl/forms/eOoe6DwZQpd2H5n53）.
+The events contain
 the addition, deletions or failures of batch instance or servers.
 Now it could successfully output the number of batch tasks in the cluster at a specified time. Plus, it could record the changes of 
 the number of tasks and used CPU or memory of each machine at a specified time, which is as real as described in the trace data.
