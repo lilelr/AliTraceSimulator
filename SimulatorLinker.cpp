@@ -89,6 +89,10 @@ namespace AliSim {
         current_batch_instance_map_.insert({batchInstance.end_timestamp_, batchInstance});
 
         // updates the resource status  of the machine specified by the batchInstance
+//        CHECK(tasks_map_.count(batchInstance.task_id_) == 1);
+        if(tasks_map_.count(batchInstance.task_id_) == 0){
+            return;
+        }
         auto &task_ref = tasks_map_.at(batchInstance.task_id_);
         float avg_memory = task_ref.plan_men_;
         resource_record_.UpdateServerResourceStatus(1, &batchInstance, avg_memory);
@@ -130,7 +134,7 @@ namespace AliSim {
         auto count_current_instance_ts = current_batch_instance_map_.count(ts);
         if (count_current_instance_ts > 0) {
             auto current_instance_iter = current_batch_instance_map_.find(ts);
-            while (count_current_instance_ts) {
+            while (count_current_instance_ts ) {
                 if (current_instance_iter->second.status_ == "Terminated" ||
                     current_instance_iter->second.status_ == "Failed" ||
                     current_instance_iter->second.status_ == "Cancelled" ||
@@ -138,6 +142,7 @@ namespace AliSim {
 //                    auto previous_iter = current_tasks_iter;
 //                    previous_iter--;
                     // updates the resource status  of the machine specified by the batchInstance
+                    CHECK(tasks_map_.count(current_instance_iter->second.task_id_) == 1);
                     auto &task_ref = tasks_map_.at(current_instance_iter->second.task_id_);
                     float avg_memory = task_ref.plan_men_;
                     resource_record_.UpdateServerResourceStatus(2,&current_instance_iter->second, avg_memory);
