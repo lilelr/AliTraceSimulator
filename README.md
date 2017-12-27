@@ -8,4 +8,4 @@ the number of tasks and used CPU or memory of each machine at a specified time, 
 
 ![这里写图片描述](http://7xtc7i.com1.z0.glb.clouddn.com/Snip20171227_2.png)
 
-![这里写图片描述](http://7xtc7i.com1.z0.glb.clouddn.com/Snip20171227_5.png)
+![这里写图片描述](http://7xtc7i.com1.z0.glb.clouddn.com/Snip20171227_6.png)
