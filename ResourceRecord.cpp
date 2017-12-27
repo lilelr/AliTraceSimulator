@@ -23,6 +23,7 @@ namespace AliSim {
             {
                 resource_status.used_mem_ += avg_memory;
                 resource_status.used_cpu_ += batchInstance->avg_real_cpu_num_;
+                LOG(INFO)<<"Machine "<<resource_status.machine_id_ << "'s used memory by programs is "<< resource_status.used_mem_<<", used cpu is "<<resource_status.used_cpu_<<endl;
                 break;
             }
 
@@ -30,6 +31,7 @@ namespace AliSim {
             {
                 resource_status.used_mem_ -= avg_memory;
                 resource_status.used_cpu_ -= batchInstance->avg_real_cpu_num_;
+                LOG(INFO)<<"Machine "<<resource_status.machine_id_ << "'s used memory by programs is "<< resource_status.used_mem_<<", used cpu is "<<resource_status.used_cpu_<<endl;
                 break;
             }
 
@@ -54,6 +56,7 @@ namespace AliSim {
 
                 auto &instance_list = machine_instance_map_[machine_ID];
                 instance_list.push_back(batch_instance_identifier);
+                LOG(INFO)<<"Machine "<<machine_ID << " adds a task. The task ID is "<< task_id <<". It has total "<<instance_list.size()<<endl;
                 break;
             }
             case 2: // Delete
@@ -63,6 +66,7 @@ namespace AliSim {
                 for (auto iter = existed_instance_list.begin(); iter != existed_instance_list.end(); iter++) {
                     if (iter->task_id_ == task_id && iter->end_ts_ == end_ts && iter->seq_no_ == seq_no) {
                         existed_instance_list.erase(iter);
+                        LOG(INFO)<<"Machine "<<machine_ID << " deletes a task. The task ID is "<< task_id <<". It has total "<<existed_instance_list.size()<<endl;
                         break;
                     }
                 }

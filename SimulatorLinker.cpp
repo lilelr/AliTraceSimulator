@@ -53,6 +53,7 @@ namespace AliSim {
 
         onTaskFinished(cur_sim_ts);
 
+        // load batch instance events
         auto count_batch_instance_cur_ts = batch_instance_events_map_.count(cur_sim_ts);
         if (count_batch_instance_cur_ts) {
             auto batch_instance_map_iter = batch_instance_events_map_.find(cur_sim_ts);
