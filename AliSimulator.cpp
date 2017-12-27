@@ -19,7 +19,7 @@ namespace AliSim{
 
     AliSimulator::~AliSimulator() {
           delete linker_;
-        delete event_handler_;
+//        delete event_handler_;
     }
 
     void AliSimulator::Run() {
@@ -34,7 +34,7 @@ namespace AliSim{
         linker_->LoadTraceData(&ali_trace_loader_);
 
         // simulation starts
-        while (simulated_wall_time_.GetCurrentTimeStamp() < 10000){
+        while (simulated_wall_time_.GetCurrentTimeStamp() < 7000){
             simulated_wall_time_.IncreaseCurrentTimeStampByOneSec();
             linker_->HandleEventsOfCurrentTimeStamp();
 

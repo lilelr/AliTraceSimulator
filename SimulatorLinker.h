@@ -48,7 +48,7 @@ namespace AliSim{
     public:
         explicit SimulatorLinker(EventHandler* eventHandler,SimulatedWallTime* simulatedWallTime);
 
-        virtual ~SimulatorLinker();
+         ~SimulatorLinker();
 
         void LoadTraceData(AliTraceLoader* trace_loader);
 

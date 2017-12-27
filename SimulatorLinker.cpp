@@ -14,7 +14,7 @@ namespace AliSim {
 
     SimulatorLinker::~SimulatorLinker() {
         delete event_handler_;
-        delete simulated_time_;
+//        delete simulated_time_;
     }
 
     void SimulatorLinker::LoadTraceData(AliTraceLoader *trace_loader) {

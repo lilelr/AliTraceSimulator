@@ -20,16 +20,18 @@ namespace AliSim {
         ResourceStatus &resource_status = server_map_.at(batchInstance->machine_ID_);
         switch (action) {
             case 1: // Add
-
+            {
                 resource_status.used_mem_ += avg_memory;
                 resource_status.used_cpu_ += batchInstance->avg_real_cpu_num_;
-
                 break;
+            }
 
             case 2: // Reduce
+            {
                 resource_status.used_mem_ -= avg_memory;
                 resource_status.used_cpu_ -= batchInstance->avg_real_cpu_num_;
                 break;
+            }
 
             default:
                 break;
@@ -42,6 +44,7 @@ namespace AliSim {
 
         switch (action) {
             case 1: // Add
+            {
                 BatchInstanceIdentifier batch_instance_identifier;
                 batch_instance_identifier.machine_id_ = machine_ID;
                 batch_instance_identifier.end_ts_ = end_ts;
@@ -52,7 +55,10 @@ namespace AliSim {
                 auto &instance_list = machine_instance_map_[machine_ID];
                 instance_list.push_back(batch_instance_identifier);
                 break;
+            }
             case 2: // Delete
+            {
+
                 auto &existed_instance_list = machine_instance_map_.at(machine_ID);
                 for (auto iter = existed_instance_list.begin(); iter != existed_instance_list.end(); iter++) {
                     if (iter->task_id_ == task_id && iter->end_ts_ == end_ts && iter->seq_no_ == seq_no) {
@@ -61,6 +67,7 @@ namespace AliSim {
                     }
                 }
                 break;
+            }
             default:
                 break;
         }

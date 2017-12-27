@@ -31,7 +31,7 @@ namespace AliSim{
         explicit AliSimulator(SimulatedWallTime simulatedWallTime_,AliTraceLoader aliTraceLoader);
 
 
-        virtual ~AliSimulator();
+        ~AliSimulator();
         void Run();
 
 
