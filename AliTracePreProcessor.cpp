@@ -26,7 +26,7 @@ namespace AliSim{
 
     void AliTracePreProcessor::Run() {
 
-//        CalculateBatchInstanceRuntime();
+        CalculateBatchInstanceRuntime();
         CalculateServiceInstanceRuntime();
     }
 

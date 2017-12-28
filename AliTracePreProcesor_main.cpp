@@ -13,10 +13,20 @@
 
 using namespace std;
 
-DEFINE_string(trace_path, "/home/lilelr/trace_201710/", "Path where the trace files are.");
+DEFINE_string(trace_path, "", "Path where the trace files are.");
 
+inline void init(int argc, char* argv[]){
+    // Set up usage message.
 
-int main() {
+    google::ParseCommandLineFlags(&argc, &argv, false);
+
+    // Set up glog for logging output.
+    google::InitGoogleLogging(argv[0]);
+
+}
+
+int main(int argc, char* argv[]) {
+    init(argc, argv);
 
     AliSim::AliTracePreProcessor instance_processor(FLAGS_trace_path);
     instance_processor.Run();

@@ -39,6 +39,7 @@ namespace AliSim {
         int64_t num_line = 1;
         char line[150];
         vector<string> line_cols;
+        int32_t server_count = 0;
         while (!feof(server_events_file)) {
             if (fscanf(server_events_file, "%[^\n]%*[\n]", &line[0]) > 0) {
                 boost::split(line_cols, line, is_any_of(","), token_compress_off);
@@ -64,6 +65,10 @@ namespace AliSim {
 
                         server_events_map->insert(pair<uint64_t,ServerEvent>(server_event.ts_,server_event));
 //                            LOG(INFO)<<batchInstance.status_<<endl;
+                        if(server_event.ts_ == 0 ){
+                            server_count++;
+                        }
+
                     } catch (bad_cast& e) {
                         LOG(INFO) << e.what() << endl;
                         LOG(INFO) << "num line: " << num_line << endl;
@@ -73,7 +78,7 @@ namespace AliSim {
 //            LOG(INFO) << "read num line: " << num_line << endl;
             num_line++;
         }
-//            LOG(INFO)<<(line_cols.size());
+            LOG(INFO)<<"Start up! The cluster totally has "<< server_count<< " servers\n" <<endl;
         fclose(server_events_file);
     }
 
@@ -124,7 +129,10 @@ void AliTraceLoader::LoadBatchInstanceEvent(multimap<uint64_t, BatchInstance>* b
                 }
             }
         }
-//            LOG(INFO) << "read num line: " << num_line << endl;
+//           LOG(INFO) << "read num line: " << num_line << endl;
+        if (num_line > 100000){
+            break;
+        }
         num_line++;
     }
 //            LOG(INFO)<<(line_cols.size());
