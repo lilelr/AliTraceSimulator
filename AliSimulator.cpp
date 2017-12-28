@@ -13,7 +13,8 @@ namespace AliSim{
 
     AliSimulator::AliSimulator(SimulatedWallTime simulatedWallTime,AliTraceLoader aliTraceLoader) : simulated_wall_time_(simulatedWallTime),ali_trace_loader_(aliTraceLoader) {
         event_handler_= new EventHandler(&simulated_wall_time_);
-        linker_ = new SimulatorLinker(event_handler_, &simulated_wall_time_);
+        ResourceRecord resource_record(&simulatedWallTime);
+        linker_ = new SimulatorLinker(event_handler_, &simulated_wall_time_,resource_record);
         run_cnt_ = 0;
     }
 

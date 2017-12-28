@@ -46,7 +46,7 @@ namespace AliSim{
 
 
     public:
-        explicit SimulatorLinker(EventHandler* eventHandler,SimulatedWallTime* simulatedWallTime);
+        explicit SimulatorLinker(EventHandler* eventHandler,SimulatedWallTime* simulatedWallTime, ResourceRecord& resourceRecord);
 
          ~SimulatorLinker();
 
@@ -67,7 +67,7 @@ namespace AliSim{
         void onTaskFinished(uint64_t ts);
         void onTaskFailure(uint64_t task_id);
 
-        void AddBatchInstance(BatchInstance& batchInstance);
+        void AddBatchInstance(BatchInstance& batchInstance, uint64_t ts);
 
 
 
