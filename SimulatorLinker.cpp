@@ -77,7 +77,7 @@ namespace AliSim {
 //                    //"Interupted"
 //                    onBatchInstanceInterrupted(&batch_instance_map_iter->second);
 //                }
-
+                batch_instance_map_iter++;
                 count_batch_instance_cur_ts--;
             }
         }
@@ -153,7 +153,7 @@ namespace AliSim {
                     current_batch_instance_map_.erase(current_instance_iter);
                     current_instance_iter = current_batch_instance_map_.find(ts);
 //                    current_tasks_iter = previous_iter;
-                    LOG(INFO) << "remove " << current_instance_iter->second.task_id_ << " tasks at " << ts << endl;
+//                    LOG(INFO) << "remove " << current_instance_iter->second.task_id_ << " tasks at " << ts << endl;
 
                 } else {
                     ++current_instance_iter;
