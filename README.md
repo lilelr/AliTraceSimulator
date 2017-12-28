@@ -12,6 +12,14 @@ the number of tasks and used CPU or memory of each machine at a specified time, 
 
 ![这里写图片描述](http://7xtc7i.com1.z0.glb.clouddn.com/Snip20171227_6.png)
 
-
+AliSimulator \
 --trace_path=/home/lilelr/trace_201710/ \
+--log_dir=/home/lilelr/trace_201710/log
+
+./AliSimulator \
+--trace_path=/home/lilelr/ali/trace/ \
+--log_dir=/home/lilelr/ali/trace/log
+
+./AliSimulator \
+--trace_path=/home/lilelr/trace_201710 \
 --log_dir=/home/lilelr/trace_201710/log

@@ -106,7 +106,7 @@ namespace AliSim{
                         if(batchInstance.end_timestamp_ > batchInstance.start_timestamp_){
                             batchInstance.total_runtime_ = batchInstance.end_timestamp_ - batchInstance.start_timestamp_;
 
-//                            LOG(INFO)<<batchInstance.status_<<endl;
+                            LOG(INFO)<<batchInstance.status_<<endl;
                             fprintf(out_batch_events_file,"%jd,%jd,%jd,%ju,%ju,%d,%s,%d,%d,%f,%f,%f,%f\n",batchInstance.start_timestamp_,batchInstance.end_timestamp_, batchInstance.total_runtime_,batchInstance.job_id_, batchInstance.task_id_, batchInstance.machine_ID_, batchInstance.status_, batchInstance.seq_no_, batchInstance.total_seq_no_,batchInstance.max_real_cpu_num_,batchInstance.avg_real_cpu_num_,batchInstance.max_mem_usage_,batchInstance.avg_mem_usage_);
                         }
 
